@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <header>
+      <h2>JSON String Parser / Prettifier</h2>
+      <p>Paste your stringified JSON object and it gets parsed and displayed.</p>
+    </header>
     <div class="row">
       <div class="input">
         <h3>Stringified JSON</h3>
@@ -8,21 +12,39 @@
       <div class="output">
         <h3>JSON PrettyPrint</h3>
         <pre v-highlightjs="sourcecode"><code class="json"></code></pre>
-        <button v-clipboard="() => sourcecode"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 1024">
-  <path fill="currentColor" d="M128 768h256v64H128v-64z m320-384H128v64h320v-64z m128 192V448L384 640l192 192V704h320V576H576z m-288-64H128v64h160v-64zM128 704h160v-64H128v64z m576 64h64v128c-1 18-7 33-19 45s-27 18-45 19H64c-35 0-64-29-64-64V192c0-35 29-64 64-64h192C256 57 313 0 384 0s128 57 128 128h192c35 0 64 29 64 64v320h-64V320H64v576h640V768zM128 256h512c0-35-29-64-64-64h-64c-35 0-64-29-64-64s-29-64-64-64-64 29-64 64-29 64-64 64h-64c-35 0-64 29-64 64z"/>
-</svg></button>
+        <button v-clipboard="() => sourcecode" @click="$popup({message: 'Copied!'})"><save-icon></save-icon></button>
+        <div class="center">
+          <label for="spaces">Space Formatting:</label>
+          <select v-model="spaces" id="spaces">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="tab">tabs</option>
+          </select>
+        </div>
       </div>
     </div>
+    <vue-up></vue-up>
   </div>
 </template>
 
 <script>
+import 'highlight.js/styles/googlecode.css'
+
+import saveIcon from './components/SaveIcon';
+
+// function SelectAll(id)
+// {
+//     document.getElementById(id).focus();
+//     document.getElementById(id).select();
+// }
 
 export default {
   name: 'app',
   data: () => {
     return {
       text : '',
+      spaces: 2,
     }
   },
   computed: {
@@ -32,7 +54,12 @@ export default {
       //parse twice if source is string string
       else if (text[0] === '"' && text[text.length-1] === '"'){
         // text = text.slice(1,-2);
-        text = JSON.parse(text)
+        try{
+          text = JSON.parse(text)
+        }
+        catch(e) {
+          // just continue
+        }
       }
       try{
         return JSON.parse(text)
@@ -41,8 +68,14 @@ export default {
         return "Parse Error"
       }
     },
-    sourcecode: function() { return this.json ? JSON.stringify(this.json, null, 2) : ''}
+    sourcecode: function() {
+      let space = this.spaces === "tab" ? "\t" : Number(this.spaces)
+      return this.json ? JSON.stringify(this.json, null, space) : ''
+    }
   },
+  components: {
+    saveIcon,
+  }
 }
 </script>
 
@@ -65,6 +98,17 @@ h3 {
   background: #fafafa;
   min-height: 100vh;
   position: relative;
+  svg { width: 20px; }
+  // flow-root creates a new block context, prevents H1 / P tag's margin collapse & messing up layout.
+  // Only supported by Chrome and FF though...so overflow:auto is the hack for the other browsers!
+  header { display: flow-root; padding: 0 20px; overflow:auto; }
+  select { display: inline-block; }
+  label { font-size: smaller; }
+
+  // hide the background if applied from whatever code style is used
+  .hljs{
+    background: none;
+  }
 }
 .row {
   display: flex;
@@ -102,6 +146,9 @@ h3 {
     }
   }
 }
+.center {
+  text-align: center;
+}
 pre{
   width: 100%;
   height: 100%;
@@ -116,8 +163,5 @@ textarea{
   border: none;
   flex:1;
   overflow-y: scroll;
-}
-svg {
-  width: 20px;
 }
 </style>
