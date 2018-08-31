@@ -163,5 +163,6 @@ textarea{
   border: none;
   flex:1;
   overflow-y: scroll;
+  resize: none;
 }
 </style>
