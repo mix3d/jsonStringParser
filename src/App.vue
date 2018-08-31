@@ -25,6 +25,11 @@
       </div>
     </div>
     <vue-up></vue-up>
+    <footer>
+      <a href="https://www.netlify.com">
+        <img src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg"/>
+      </a>
+    </footer>
   </div>
 </template>
 
@@ -133,12 +138,13 @@ h3 {
       right: 10px;
       border:none;
       background: transparent;
+      color: grey;
       &:hover{
         cursor: pointer;
-        color: black;
+        color: #24c1b7;
       }
-      &, &:active {
-        color: grey
+      &:active {
+        color: #4b9bbe;
       }
       &:focus{
         outline: none
@@ -164,5 +170,11 @@ textarea{
   flex:1;
   overflow-y: scroll;
   resize: none;
+}
+footer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
 }
 </style>
