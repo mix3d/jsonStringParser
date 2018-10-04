@@ -2,6 +2,7 @@
   <div id="app">
     <header>
       <h2>JSON String Parser / Prettifier</h2>
+      <p>Hi dev team!</p>
       <p>Paste your stringified JSON object and it gets parsed and displayed.</p>
     </header>
     <div class="row">
@@ -24,6 +25,7 @@
         </div>
       </div>
     </div>
+    <!-- Fullscreen message popup! -->
     <vue-up></vue-up>
     <footer>
       <a href="https://www.netlify.com">
@@ -37,12 +39,6 @@
 import 'highlight.js/styles/googlecode.css'
 
 import saveIcon from './components/SaveIcon';
-
-// function SelectAll(id)
-// {
-//     document.getElementById(id).focus();
-//     document.getElementById(id).select();
-// }
 
 export default {
   name: 'app',
